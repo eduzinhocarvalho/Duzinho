@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paletas de Cores</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            --bg-color: #f5f5f5;
+            --text-color: #333;
+            --card-bg: white;
+            --header-bg: linear-gradient(135deg, #007acc 0%, #1e1e1e 100%);
+            --footer-color: #666;
+            --accent-color: #007acc;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .dark-mode {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --card-bg: #2d2d2d;
+            --header-bg: linear-gradient(135deg, #0a294d 0%, #000000 100%);
+            --footer-color: #aaa;
+            --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            background: var(--header-bg);
+            color: white;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-color);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0.5rem auto 0;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        button, select {
+            padding: 0.7rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            background: var(--accent-color);
+            color: white;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover, select:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        select {
+            background: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding-right: 2rem;
+        }
+
+        .theme-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .theme-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .theme-header {
+            padding: 1.2rem;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.1rem;
+            position: relative;
+        }
+
+        .theme-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .theme-colors {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 1.2rem;
+        }
+
+        .color-box {
+            height: 90px;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 10px;
+            font-size: 0.85rem;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            font-family: 'Courier New', monospace;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .color-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .color-box::after {
+            content: 'Clique para ampliar';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 0.7rem;
+            padding: 3px;
+            text-align: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .color-box:hover::after {
+            opacity: 1;
+        }
+
+        .color-zoom {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .color-zoom.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .zoom-content {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: var(--box-shadow);
+            position: relative;
+        }
+
+        .zoom-color {
+            width: 100%;
+            height: 200px;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+        }
+
+        .zoom-hex {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .zoom-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .favorites-section {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .favorites-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .favorites-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            min-height: 60px;
+            padding: 10px;
+            border: 2px dashed rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .favorite-color {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 5px;
+            font-size: 0.7rem;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            font-family: 'Courier New', monospace;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .favorite-color:hover::after {
+            content: 'Clique para copiar';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 0.6rem;
+            padding: 2px;
+            text-align: center;
+        }
+
+        .empty-favorites {
+            color: var(--text-color);
+            opacity: 0.7;
+            font-style: italic;
+            width: 100%;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem 1rem;
+            color: var(--footer-color);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            z-index: 1001;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+        
+        .share-whatsapp {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .share-whatsapp:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Cores dos temas */
+        .dark-plus { background: #1E1E1E; }
+        .monokai { background: #272822; }
+        .dracula { background: #282A36; }
+        .solarized-dark { background: #002B36; }
+        .solarized-light { background: #fdf6e3; color: #586e75; }
+        .github-light { background: #24292E; }
+        .github-dark { background: #0d1117; }
+        .night-owl { background: #011627; }
+        .night-owl-light { background: #FBFBFB; color: #403F53; }
+        .material { background: #263238; }
+        .material-darker { background: #212121; }
+        .palenight { background: #292D3E; }
+        .one-dark-pro { background: #282C34; }
+        .atom-one-light { background: #fafafa; color: #383a42; }
+        .cobalt2 { background: #193549; }
+        .synthwave { background: #2B213A; }
+        .winter-is-coming { background: #011627; }
+        .gruvbox { background: #282828; }
+        .horizon { background: #1C1E26; }
+        .nord { background: #2E3440; }
+        .quietlight { background: #F5F5F5; color: #333; }
+        .abyss { background: #040F1A; }
+        .kimbie-dark { background: #221A0F; }
+        .tomorrow-night-blue { background: #002451; }
+        .ayu-mirage { background: #1F2430; }
+        .city-lights { background: #1D252C; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Paletas de Cores</h1>
+            <p class="subtitle">Observe, pense e escolha a cor que mais te chamar a atenção 😊</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="controls">
+            <button id="toggle-mode">
+                <i class="fas fa-moon"></i> Alternar Modo
+            </button>
+            <select id="theme-filter">
+                <option value="all">Todos os Temas</option>
+                <option value="dark">Temas Escuros</option>
+                <option value="light">Temas Claros</option>
+                <option value="vibrant">Temas Vibrantes</option>
+                <option value="minimal">Temas Minimalistas</option>
+            </select>
+        </div>
+        
+        <div class="theme-container">
+            <!-- Dark+ Theme -->
+            <div class="theme-card" data-theme-type="dark">
+                <div class="theme-header dark-plus">
+                    Dark+ (Default)
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #1E1E1E;" data-hex="#1E1E1E"></div>
+                    <div class="color-box" style="background: #D4D4D4; color: #333;" data-hex="#D4D4D4"></div>
+                    <div class="color-box" style="background: #569CD6;" data-hex="#569CD6"></div>
+                    <div class="color-box" style="background: #6A9955;" data-hex="#6A9955"></div>
+                    <div class="color-box" style="background: #CE9178;" data-hex="#CE9178"></div>
+                    <div class="color-box" style="background: #DCDCAA; color: #333;" data-hex="#DCDCAA"></div>
+                    <div class="color-box" style="background: #9CDCFE; color: #333;" data-hex="#9CDCFE"></div>
+                    <div class="color-box" style="background: #C586C0;" data-hex="#C586C0"></div>
+                    <div class="color-box" style="background: #646695;" data-hex="#646695"></div>
+                </div>
+            </div>
+            
+            <!-- Monokai Theme -->
+            <div class="theme-card" data-theme-type="vibrant">
+                <div class="theme-header monokai">
+                    Monokai
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #272822;" data-hex="#272822"></div>
+                    <div class="color-box" style="background: #F8F8F2; color: #333;" data-hex="#F8F8F2"></div>
+                    <div class="color-box" style="background: #F92672;" data-hex="#F92672"></div>
+                    <div class="color-box" style="background: #75715E;" data-hex="#75715E"></div>
+                    <div class="color-box" style="background: #E6DB74; color: #333;" data-hex="#E6DB74"></div>
+                    <div class="color-box" style="background: #A6E22E; color: #333;" data-hex="#A6E22E"></div>
+                    <div class="color-box" style="background: #66D9EF;" data-hex="#66D9EF"></div>
+                    <div class="color-box" style="background: #AE81FF;" data-hex="#AE81FF"></div>
+                    <div class="color-box" style="background: #FD971F;" data-hex="#FD971F"></div>
+                </div>
+            </div>
+            
+            <!-- Dracula Theme -->
+            <div class="theme-card" data-theme-type="vibrant">
+                <div class="theme-header dracula">
+                    Dracula
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #282A36;" data-hex="#282A36"></div>
+                    <div class="color-box" style="background: #F8F8F2; color: #333;" data-hex="#F8F8F2"></div>
+                    <div class="color-box" style="background: #FF79C6;" data-hex="#FF79C6"></div>
+                    <div class="color-box" style="background: #6272A4;" data-hex="#6272A4"></div>
+                    <div class="color-box" style="background: #F1FA8C; color: #333;" data-hex="#F1FA8C"></div>
+                    <div class="color-box" style="background: #50FA7B; color: #333;" data-hex="#50FA7B"></div>
+                    <div class="color-box" style="background: #8BE9FD; color: #333;" data-hex="#8BE9FD"></div>
+                    <div class="color-box" style="background: #BD93F9;" data-hex="#BD93F9"></div>
+                    <div class="color-box" style="background: #FFB86C;" data-hex="#FFB86C"></div>
+                </div>
+            </div>
+            
+            <!-- Solarized Dark -->
+            <div class="theme-card" data-theme-type="minimal">
+                <div class="theme-header solarized-dark">
+                    Solarized Dark
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #002B36;" data-hex="#002B36"></div>
+                    <div class="color-box" style="background: #839496; color: #333;" data-hex="#839496"></div>
+                    <div class="color-box" style="background: #859900;" data-hex="#859900"></div>
+                    <div class="color-box" style="background: #586E75;" data-hex="#586E75"></div>
+                    <div class="color-box" style="background: #2AA198;" data-hex="#2AA198"></div>
+                    <div class="color-box" style="background: #268BD2;" data-hex="#268BD2"></div>
+                    <div class="color-box" style="background: #D33682;" data-hex="#D33682"></div>
+                    <div class="color-box" style="background: #B58900;" data-hex="#B58900"></div>
+                    <div class="color-box" style="background: #CB4B16;" data-hex="#CB4B16"></div>
+                </div>
+            </div>
+            
+            <!-- Solarized Light -->
+            <div class="theme-card" data-theme-type="light">
+                <div class="theme-header solarized-light">
+                    Solarized Light
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #fdf6e3; color: #586e75;" data-hex="#fdf6e3"></div>
+                    <div class="color-box" style="background: #586e75; color: white;" data-hex="#586e75"></div>
+                    <div class="color-box" style="background: #859900; color: white;" data-hex="#859900"></div>
+                    <div class="color-box" style="background: #93a1a1; color: white;" data-hex="#93a1a1"></div>
+                    <div class="color-box" style="background: #2aa198; color: white;" data-hex="#2aa198"></div>
+                    <div class="color-box" style="background: #268bd2; color: white;" data-hex="#268bd2"></div>
+                    <div class="color-box" style="background: #6c71c4; color: white;" data-hex="#6c71c4"></div>
+                    <div class="color-box" style="background: #cb4b16; color: white;" data-hex="#cb4b16"></div>
+                    <div class="color-box" style="background: #dc322f; color: white;" data-hex="#dc322f"></div>
+                </div>
+            </div>
+            
+            <!-- GitHub Light -->
+            <div class="theme-card" data-theme-type="light">
+                <div class="theme-header github-light">
+                    GitHub Light
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #FFFFFF; color: #333;" data-hex="#FFFFFF"></div>
+                    <div class="color-box" style="background: #24292E; color: white;" data-hex="#24292E"></div>
+                    <div class="color-box" style="background: #D73A49; color: white;" data-hex="#D73A49"></div>
+                    <div class="color-box" style="background: #6A737D; color: white;" data-hex="#6A737D"></div>
+                    <div class="color-box" style="background: #032F62; color: white;" data-hex="#032F62"></div>
+                    <div class="color-box" style="background: #6F42C1; color: white;" data-hex="#6F42C1"></div>
+                    <div class="color-box" style="background: #005CC5; color: white;" data-hex="#005CC5"></div>
+                    <div class="color-box" style="background: #E36209; color: white;" data-hex="#E36209"></div>
+                    <div class="color-box" style="background: #22863A; color: white;" data-hex="#22863A"></div>
+                </div>
+            </div>
+            
+            <!-- GitHub Dark -->
+            <div class="theme-card" data-theme-type="dark">
+                <div class="theme-header github-dark">
+                    GitHub Dark
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #0d1117;" data-hex="#0d1117"></div>
+                    <div class="color-box" style="background: #c9d1d9; color: #333;" data-hex="#c9d1d9"></div>
+                    <div class="color-box" style="background: #ff7b72;" data-hex="#ff7b72"></div>
+                    <div class="color-box" style="background: #8b949e;" data-hex="#8b949e"></div>
+                    <div class="color-box" style="background: #79c0ff;" data-hex="#79c0ff"></div>
+                    <div class="color-box" style="background: #d2a8ff;" data-hex="#d2a8ff"></div>
+                    <div class="color-box" style="background: #a5d6ff;" data-hex="#a5d6ff"></div>
+                    <div class="color-box" style="background: #ffa657;" data-hex="#ffa657"></div>
+                    <div class="color-box" style="background: #7ee787;" data-hex="#7ee787"></div>
+                </div>
+            </div>
+            
+            <!-- Night Owl -->
+            <div class="theme-card" data-theme-type="dark">
+                <div class="theme-header night-owl">
+                    Night Owl
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #011627;" data-hex="#011627"></div>
+                    <div class="color-box" style="background: #D6DEEB; color: #333;" data-hex="#D6DEEB"></div>
+                    <div class="color-box" style="background: #7FDBCA;" data-hex="#7FDBCA"></div>
+                    <div class="color-box" style="background: #637777;" data-hex="#637777"></div>
+                    <div class="color-box" style="background: #ADDB67; color: #333;" data-hex="#ADDB67"></div>
+                    <div class="color-box" style="background: #82AAFF;" data-hex="#82AAFF"></div>
+                    <div class="color-box" style="background: #C792EA;" data-hex="#C792EA"></div>
+                    <div class="color-box" style="background: #FF5874;" data-hex="#FF5874"></div>
+                    <div class="color-box" style="background: #F78C6C;" data-hex="#F78C6C"></div>
+                </div>
+            </div>
+            
+            <!-- Night Owl Light -->
+            <div class="theme-card" data-theme-type="light">
+                <div class="theme-header night-owl-light">
+                    Night Owl Light
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #FBFBFB; color: #403F53;" data-hex="#FBFBFB"></div>
+                    <div class="color-box" style="background: #403F53; color: white;" data-hex="#403F53"></div>
+                    <div class="color-box" style="background: #4876D6; color: white;" data-hex="#4876D6"></div>
+                    <div class="color-box" style="background: #989FB1; color: white;" data-hex="#989FB1"></div>
+                    <div class="color-box" style="background: #11AB9B; color: white;" data-hex="#11AB9B"></div>
+                    <div class="color-box" style="background: #A846EB; color: white;" data-hex="#A846EB"></div>
+                    <div class="color-box" style="background: #E05561; color: white;" data-hex="#E05561"></div>
+                    <div class="color-box" style="background: #E9B143; color: white;" data-hex="#E9B143"></div>
+                    <div class="color-box" style="background: #8EB33B; color: white;" data-hex="#8EB33B"></div>
+                </div>
+            </div>
+            
+            <!-- Material Theme -->
+            <div class="theme-card" data-theme-type="dark">
+                <div class="theme-header material">
+                    Material
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #263238;" data-hex="#263238"></div>
+                    <div class="color-box" style="background: #EEFFFF; color: #333;" data-hex="#EEFFFF"></div>
+                    <div class="color-box" style="background: #82AAFF;" data-hex="#82AAFF"></div>
+                    <div class="color-box" style="background: #546E7A;" data-hex="#546E7A"></div>
+                    <div class="color-box" style="background: #C3E88D; color: #333;" data-hex="#C3E88D"></div>
+                    <div class="color-box" style="background: #89DDFF;" data-hex="#89DDFF"></div>
+                    <div class="color-box" style="background: #C792EA;" data-hex="#C792EA"></div>
+                    <div class="color-box" style="background: #FF5370;" data-hex="#FF5370"></div>
+                    <div class="color-box" style="background: #F78C6C;" data-hex="#F78C6C"></div>
+                </div>
+            </div>
+            
+            <!-- One Dark Pro -->
+            <div class="theme-card" data-theme-type="dark">
+                <div class="theme-header one-dark-pro">
+                    One Dark Pro
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #282C34;" data-hex="#282C34"></div>
+                    <div class="color-box" style="background: #ABB2BF; color: #333;" data-hex="#ABB2BF"></div>
+                    <div class="color-box" style="background: #E06C75;" data-hex="#E06C75"></div>
+                    <div class="color-box" style="background: #5C6370;" data-hex="#5C6370"></div>
+                    <div class="color-box" style="background: #98C379;" data-hex="#98C379"></div>
+                    <div class="color-box" style="background: #61AFEF;" data-hex="#61AFEF"></div>
+                    <div class="color-box" style="background: #C678DD;" data-hex="#C678DD"></div>
+                    <div class="color-box" style="background: #E5C07B;" data-hex="#E5C07B"></div>
+                    <div class="color-box" style="background: #56B6C2;" data-hex="#56B6C2"></div>
+                </div>
+            </div>
+            
+            <!-- Atom One Light -->
+            <div class="theme-card" data-theme-type="light">
+                <div class="theme-header atom-one-light">
+                    Atom One Light
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #fafafa; color: #383a42;" data-hex="#fafafa"></div>
+                    <div class="color-box" style="background: #383a42; color: white;" data-hex="#383a42"></div>
+                    <div class="color-box" style="background: #e45649; color: white;" data-hex="#e45649"></div>
+                    <div class="color-box" style="background: #a0a1a7; color: white;" data-hex="#a0a1a7"></div>
+                    <div class="color-box" style="background: #50a14f; color: white;" data-hex="#50a14f"></div>
+                    <div class="color-box" style="background: #4078f2; color: white;" data-hex="#4078f2"></div>
+                    <div class="color-box" style="background: #a626a4; color: white;" data-hex="#a626a4"></div>
+                    <div class="color-box" style="background: #c18401; color: white;" data-hex="#c18401"></div>
+                    <div class="color-box" style="background: #0184bc; color: white;" data-hex="#0184bc"></div>
+                </div>
+            </div>
+            
+            <!-- Cobalt2 -->
+            <div class="theme-card" data-theme-type="vibrant">
+                <div class="theme-header cobalt2">
+                    Cobalt2
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #193549;" data-hex="#193549"></div>
+                    <div class="color-box" style="background: #FFFFFF; color: #333;" data-hex="#FFFFFF"></div>
+                    <div class="color-box" style="background: #FF628C;" data-hex="#FF628C"></div>
+                    <div class="color-box" style="background: #5F7E97;" data-hex="#5F7E97"></div>
+                    <div class="color-box" style="background: #3AD900; color: #333;" data-hex="#3AD900"></div>
+                    <div class="color-box" style="background: #80FFBB; color: #333;" data-hex="#80FFBB"></div>
+                    <div class="color-box" style="background: #FFEE80; color: #333;" data-hex="#FFEE80"></div>
+                    <div class="color-box" style="background: #FF9D00; color: #333;" data-hex="#FF9D00"></div>
+                    <div class="color-box" style="background: #15F4EE;" data-hex="#15F4EE"></div>
+                </div>
+            </div>
+
+            <!-- Ayu Mirage -->
+            <div class="theme-card" data-theme-type="dark">
+                <div class="theme-header ayu-mirage">
+                    Ayu Mirage
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #1F2430;" data-hex="#1F2430"></div>
+                    <div class="color-box" style="background: #CBCCC6; color: #333;" data-hex="#CBCCC6"></div>
+                    <div class="color-box" style="background: #FFCC66;" data-hex="#FFCC66"></div>
+                    <div class="color-box" style="background: #5CCFE6;" data-hex="#5CCFE6"></div>
+                    <div class="color-box" style="background: #BAE67E;" data-hex="#BAE67E"></div>
+                    <div class="color-box" style="background: #73D0FF;" data-hex="#73D0FF"></div>
+                    <div class="color-box" style="background: #F28779;" data-hex="#F28779"></div>
+                    <div class="color-box" style="background: #707A8C;" data-hex="#707A8C"></div>
+                    <div class="color-box" style="background: #D4BFFF;" data-hex="#D4BFFF"></div>
+                </div>
+            </div>
+
+            <!-- Winter is Coming -->
+            <div class="theme-card" data-theme-type="dark">
+                <div class="theme-header winter-is-coming">
+                    Winter is Coming
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #0A0E14;" data-hex="#0A0E14"></div>
+                    <div class="color-box" style="background: #C7C7C7; color: #333;" data-hex="#C7C7C7"></div>
+                    <div class="color-box" style="background: #FFEE79;" data-hex="#FFEE79"></div>
+                    <div class="color-box" style="background: #6FC1FF;" data-hex="#6FC1FF"></div>
+                    <div class="color-box" style="background: #E1EFFF;" data-hex="#E1EFFF"></div>
+                    <div class="color-box" style="background: #FFB454;" data-hex="#FFB454"></div>
+                    <div class="color-box" style="background: #D2A6FF;" data-hex="#D2A6FF"></div>
+                    <div class="color-box" style="background: #95E6CB;" data-hex="#95E6CB"></div>
+                    <div class="color-box" style="background: #FF7B72;" data-hex="#FF7B72"></div>
+                </div>
+            </div>
+
+            <!-- SynthWave '84 -->
+            <div class="theme-card" data-theme-type="vibrant">
+                <div class="theme-header synthwave">
+                    SynthWave '84
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #2B213A;" data-hex="#2B213A"></div>
+                    <div class="color-box" style="background: #F92AAD;" data-hex="#F92AAD"></div>
+                    <div class="color-box" style="background: #72F1B8;" data-hex="#72F1B8"></div>
+                    <div class="color-box" style="background: #FF7EDB;" data-hex="#FF7EDB"></div>
+                    <div class="color-box" style="background: #FFE6FF;" data-hex="#FFE6FF"></div>
+                    <div class="color-box" style="background: #36F9F6;" data-hex="#36F9F6"></div>
+                    <div class="color-box" style="background: #F97E72;" data-hex="#F97E72"></div>
+                    <div class="color-box" style="background: #261447;" data-hex="#261447"></div>
+                    <div class="color-box" style="background: #FFB8D1;" data-hex="#FFB8D1"></div>
+                </div>
+            </div>
+
+            <!-- Gruvbox Dark -->
+            <div class="theme-card" data-theme-type="dark">
+                <div class="theme-header gruvbox">
+                    Gruvbox Dark
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #282828;" data-hex="#282828"></div>
+                    <div class="color-box" style="background: #EBDBB2; color: #333;" data-hex="#EBDBB2"></div>
+                    <div class="color-box" style="background: #FB4934;" data-hex="#FB4934"></div>
+                    <div class="color-box" style="background: #B8BB26;" data-hex="#B8BB26"></div>
+                    <div class="color-box" style="background: #83A598;" data-hex="#83A598"></div>
+                    <div class="color-box" style="background: #D3869B;" data-hex="#D3869B"></div>
+                    <div class="color-box" style="background: #8EC07C;" data-hex="#8EC07C"></div>
+                    <div class="color-box" style="background: #FE8019;" data-hex="#FE8019"></div>
+                    <div class="color-box" style="background: #458588;" data-hex="#458588"></div>
+                </div>
+            </div>
+
+            <!-- Palenight -->
+            <div class="theme-card" data-theme-type="dark">
+                <div class="theme-header palenight">
+                    Palenight
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #292D3E;" data-hex="#292D3E"></div>
+                    <div class="color-box" style="background: #959DCB; color: #333;" data-hex="#959DCB"></div>
+                    <div class="color-box" style="background: #89DDFF;" data-hex="#89DDFF"></div>
+                    <div class="color-box" style="background: #C3E88D;" data-hex="#C3E88D"></div>
+                    <div class="color-box" style="background: #FFCB6B;" data-hex="#FFCB6B"></div>
+                    <div class="color-box" style="background: #F07178;" data-hex="#F07178"></div>
+                    <div class="color-box" style="background: #C792EA;" data-hex="#C792EA"></div>
+                    <div class="color-box" style="background: #676E95;" data-hex="#676E95"></div>
+                    <div class="color-box" style="background: #82AAFF;" data-hex="#82AAFF"></div>
+                </div>
+            </div>
+
+            <!-- Horizon -->
+            <div class="theme-card" data-theme-type="dark">
+                <div class="theme-header horizon">
+                    Horizon
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #1C1E26;" data-hex="#1C1E26"></div>
+                    <div class="color-box" style="background: #E95678;" data-hex="#E95678"></div>
+                    <div class="color-box" style="background: #FAB795;" data-hex="#FAB795"></div>
+                    <div class="color-box" style="background: #25B0BC;" data-hex="#25B0BC"></div>
+                    <div class="color-box" style="background: #09F7A0;" data-hex="#09F7A0"></div>
+                    <div class="color-box" style="background: #21BFC2;" data-hex="#21BFC2"></div>
+                    <div class="color-box" style="background: #6C6F93;" data-hex="#6C6F93"></div>
+                    <div class="color-box" style="background: #FDF0ED;" data-hex="#FDF0ED"></div>
+                    <div class="color-box" style="background: #BBBBBB;" data-hex="#BBBBBB"></div>
+                </div>
+            </div>
+
+            <!-- Nord -->
+            <div class="theme-card" data-theme-type="minimal">
+                <div class="theme-header nord">
+                    Nord
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #2E3440;" data-hex="#2E3440"></div>
+                    <div class="color-box" style="background: #D8DEE9; color: #333;" data-hex="#D8DEE9"></div>
+                    <div class="color-box" style="background: #5E81AC;" data-hex="#5E81AC"></div>
+                    <div class="color-box" style="background: #A3BE8C;" data-hex="#A3BE8C"></div>
+                    <div class="color-box" style="background: #EBCB8B;" data-hex="#EBCB8B"></div>
+                    <div class="color-box" style="background: #B48EAD;" data-hex="#B48EAD"></div>
+                    <div class="color-box" style="background: #88C0D0;" data-hex="#88C0D0"></div>
+                    <div class="color-box" style="background: #81A1C1;" data-hex="#81A1C1"></div>
+                    <div class="color-box" style="background: #BF616A;" data-hex="#BF616A"></div>
+                </div>
+            </div>
+
+            <!-- City Lights -->
+            <div class="theme-card" data-theme-type="dark">
+                <div class="theme-header city-lights">
+                    City Lights
+                </div>
+                <div class="theme-colors">
+                    <div class="color-box" style="background: #1D252C;" data-hex="#1D252C"></div>
+                    <div class="color-box" style="background: #5FB3B3;" data-hex="#5FB3B3"></div>
+                    <div class="color-box" style="background: #82AAFF;" data-hex="#82AAFF"></div>
+                    <div class="color-box" style="background: #FFCB6B;" data-hex="#FFCB6B"></div>
+                    <div class="color-box" style="background: #C3E88D;" data-hex="#C3E88D"></div>
+                    <div class="color-box" style="background: #F07178;" data-hex="#F07178"></div>
+                    <div class="color-box" style="background: #C792EA;" data-hex="#C792EA"></div>
+                    <div class="color-box" style="background: #89DDFF;" data-hex="#89DDFF"></div>
+                    <div class="color-box" style="background: #EEFFFF;" data-hex="#EEFFFF"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="favorites-section">
+            <div class="favorites-title">
+                <i class="fas fa-heart" style="color: #ff4757;"></i>
+                <h2>Suas Cores Favoritas</h2>
+            </div>
+            <p>Clique em qualquer cor para adicioná-la aqui. Clique novamente para copiar o código HEX.</p>
+            <div class="favorites-container" id="favorites-container">
+                <div class="empty-favorites">Nenhuma cor favorita ainda. Clique nas cores acima para adicionar.</div>
+            </div>
+            
+            <!-- Botão de compartilhamento -->
+            <div class="share-buttons">
+                <button class="share-whatsapp" id="share-whatsapp">
+                    <i class="fab fa-whatsapp"></i> Enviar para Meu WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>Use essas paletas para mudar seu projeto! 🎨</p>
+            <p>© 2025 Paletas de Cores | Paletas baseadas nos temas mais populares do Visual Studio Code</p>
+        </div>
+    </footer>
+
+    <!-- Zoom Modal -->
+    <div class="color-zoom" id="color-zoom">
+        <div class="zoom-content">
+            <button class="zoom-close" id="zoom-close">&times;</button>
+            <div class="zoom-color" id="zoom-color"></div>
+            <div class="zoom-hex" id="zoom-hex"></div>
+            <button id="add-to-favorites">
+                <i class="fas fa-heart"></i> Adicionar aos Favoritos
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Armazenamento de cores favoritas
+        let favorites = JSON.parse(localStorage.getItem('colorFavorites')) || [];
+        let currentZoomColor = null;
+
+        // Modo Claro/Escuro
+        const toggleBtn = document.getElementById('toggle-mode');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (prefersDark) {
+            document.body.classList.add('dark-mode');
+            toggleBtn.textContent = 'Alternar Modo Claro';
+        }
+        
+        toggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            toggleBtn.innerHTML = document.body.classList.contains('dark-mode') 
+                ? '<i class="fas fa-sun"></i> Alternar Modo Claro' 
+                : '<i class="fas fa-moon"></i> Alternar Modo Escuro';
+        });
+
+        // Filtro de Temas
+        const themeFilter = document.getElementById('theme-filter');
+        const themeCards = document.querySelectorAll('.theme-card');
+        
+        themeFilter.addEventListener('change', (e) => {
+            const filter = e.target.value;
+            
+            themeCards.forEach(card => {
+                if (filter === 'all' || card.dataset.themeType === filter) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Zoom de Cores
+        const colorZoom = document.getElementById('color-zoom');
+        const zoomColor = document.getElementById('zoom-color');
+        const zoomHex = document.getElementById('zoom-hex');
+        const zoomClose = document.getElementById('zoom-close');
+        const addToFavoritesBtn = document.getElementById('add-to-favorites');
+        const colorBoxes = document.querySelectorAll('.color-box');
+        
+        colorBoxes.forEach(box => {
+            box.addEventListener('click', (e) => {
+                const color = box.style.backgroundColor;
+                const hex = box.getAttribute('data-hex');
+                
+                zoomColor.style.backgroundColor = color;
+                zoomHex.textContent = hex;
+                currentZoomColor = { color, hex };
+                
+                colorZoom.classList.add('active');
+            });
+        });
+        
+        zoomClose.addEventListener('click', () => {
+            colorZoom.classList.remove('active');
+        });
+        
+        // Fechar modal ao clicar fora
+        colorZoom.addEventListener('click', (e) => {
+            if (e.target === colorZoom) {
+                colorZoom.classList.remove('active');
+            }
+        });
+
+        // Adicionar aos favoritos
+        addToFavoritesBtn.addEventListener('click', () => {
+            if (currentZoomColor && !favorites.some(fav => fav.hex === currentZoomColor.hex)) {
+                favorites.push(currentZoomColor);
+                localStorage.setItem('colorFavorites', JSON.stringify(favorites));
+                updateFavorites();
+                showToast(`Cor ${currentZoomColor.hex} adicionada aos favoritos!`);
+            }
+        });
+
+        // Atualizar lista de favoritos
+        function updateFavorites() {
+            const container = document.getElementById('favorites-container');
+            
+            if (favorites.length === 0) {
+                container.innerHTML = '<div class="empty-favorites">Nenhuma cor favorita ainda. Clique nas cores acima para adicionar.</div>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            favorites.forEach((fav, index) => {
+                const favBox = document.createElement('div');
+                favBox.className = 'favorite-color';
+                favBox.style.backgroundColor = fav.color;
+                favBox.textContent = fav.hex;
+                
+                // Ajustar cor do texto para contraste
+                const rgb = hexToRgb(fav.hex);
+                if (rgb && (rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114) > 186) {
+                    favBox.style.color = '#333';
+                    favBox.style.textShadow = '0 1px 1px rgba(255, 255, 255, 0.5)';
+                }
+                
+                favBox.addEventListener('click', () => {
+                    navigator.clipboard.writeText(fav.hex);
+                    showToast(`Cor ${fav.hex} copiada para a área de transferência!`);
+                });
+                
+                // Botão para remover
+                const removeBtn = document.createElement('button');
+                removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                removeBtn.style.position = 'absolute';
+                removeBtn.style.top = '2px';
+                removeBtn.style.right = '2px';
+                removeBtn.style.background = 'rgba(0, 0, 0, 0.5)';
+                removeBtn.style.border = 'none';
+                removeBtn.style.borderRadius = '50%';
+                removeBtn.style.width = '18px';
+                removeBtn.style.height = '18px';
+                removeBtn.style.color = 'white';
+                removeBtn.style.fontSize = '10px';
+                removeBtn.style.cursor = 'pointer';
+                removeBtn.style.display = 'none';
+                
+                removeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    favorites = favorites.filter((_, i) => i !== index);
+                    localStorage.setItem('colorFavorites', JSON.stringify(favorites));
+                    updateFavorites();
+                    showToast(`Cor ${fav.hex} removida dos favoritos.`);
+                });
+                
+                favBox.addEventListener('mouseenter', () => {
+                    removeBtn.style.display = 'flex';
+                    removeBtn.style.justifyContent = 'center';
+                    removeBtn.style.alignItems = 'center';
+                });
+                
+                favBox.addEventListener('mouseleave', () => {
+                    removeBtn.style.display = 'none';
+                });
+                
+                favBox.appendChild(removeBtn);
+                container.appendChild(favBox);
+            });
+        }
+
+        // Mostrar notificação
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Converter HEX para RGB
+        function hexToRgb(hex) {
+            // Remove # se existir
+            hex = hex.replace('#', '');
+            
+            // Converte 3-digit hex para 6-digits
+            if (hex.length === 3) {
+                hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+            }
+            
+            // Verifica se é um hex válido
+            if (hex.length !== 6) return null;
+            
+            const r = parseInt(hex.substring(0, 2), 16);
+            const g = parseInt(hex.substring(2, 4), 16);
+            const b = parseInt(hex.substring(4, 6), 16);
+            
+            return { r, g, b };
+        }
+
+        // Adicionar cor aos favoritos ao clicar diretamente (sem abrir o zoom)
+        colorBoxes.forEach(box => {
+            box.addEventListener('dblclick', (e) => {
+                e.preventDefault();
+                const color = box.style.backgroundColor;
+                const hex = box.getAttribute('data-hex');
+                
+                if (!favorites.some(fav => fav.hex === hex)) {
+                    favorites.push({ color, hex });
+                    localStorage.setItem('colorFavorites', JSON.stringify(favorites));
+                    updateFavorites();
+                    showToast(`Cor ${hex} adicionada aos favoritos!`);
+                }
+            });
+        });
+
+        // Compartilhar no WhatsApp - ENVIAR PARA SEU NÚMERO
+        document.getElementById('share-whatsapp').addEventListener('click', () => {
+            if (favorites.length === 0) {
+                showToast('Adicione cores aos favoritos primeiro!');
+                return;
+            }
+            
+            // Substitua pelo SEU NÚMERO no formato 5511999999999 (código do país + DDD + número)
+            const yourPhoneNumber = '5543998617272'; // <<-- SUBSTITUA AQUI
+            
+            // Criar mensagem formatada
+            let message = '🌟 Cores selecionadas:\n\n';
+            
+            // Adicionar visualização das cores
+            message += favorites.map(color => {
+                return `⬛ ${color.hex}`; // O emoji quadrado aparecerá colorido no WhatsApp
+            }).join('\n');
+            
+            message += '\n\n💻';
+            
+            // Codificar para URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Abrir WhatsApp com SEU número
+            window.open(`https://wa.me/${yourPhoneNumber}?text=${encodedMessage}`, '_blank');
+        });
+
+        // Inicializar favoritos
+        updateFavorites();
+    </script>
+</body>
+</html>
